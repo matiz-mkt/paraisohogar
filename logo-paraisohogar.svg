@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500" role="img" aria-label="Paraíso Hogar">
+  <title>Paraíso Hogar</title>
+  <!-- house frame -->
+  <path d="M70,300 L70,150 L200,40 L330,150 L330,300" fill="none" stroke="#0c1f3d" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- plant leaves -->
+  <g fill="#0c1f3d">
+    <path d="M200,202 C193,172 190,150 192,128 C204,148 208,172 200,202 Z" transform="rotate(-32 200 202)"/>
+    <path d="M200,202 C193,172 190,150 192,128 C204,148 208,172 200,202 Z" transform="rotate(-11 200 202)"/>
+    <path d="M200,202 C193,172 190,150 192,128 C204,148 208,172 200,202 Z" transform="rotate(11 200 202)"/>
+    <path d="M200,202 C193,172 190,150 192,128 C204,148 208,172 200,202 Z" transform="rotate(32 200 202)"/>
+  </g>
+
+  <!-- pot -->
+  <path d="M177,200 L223,200 L217,226 L183,226 Z" fill="#0c1f3d"/>
+
+  <!-- sideboard -->
+  <rect x="140" y="226" width="120" height="54" rx="8" fill="#f9992b" stroke="#0c1f3d" stroke-width="5"/>
+  <line x1="204" y1="226" x2="204" y2="280" stroke="#0c1f3d" stroke-width="4"/>
+  <line x1="204" y1="253" x2="260" y2="253" stroke="#0c1f3d" stroke-width="4"/>
+  <circle cx="172" cy="253" r="4.5" fill="#0c1f3d"/>
+  <circle cx="232" cy="240" r="4" fill="#0c1f3d"/>
+  <circle cx="232" cy="266" r="4" fill="#0c1f3d"/>
+
+  <!-- legs -->
+  <g stroke="#0c1f3d" stroke-width="7" stroke-linecap="round">
+    <line x1="152" y1="280" x2="143" y2="303"/>
+    <line x1="172" y1="280" x2="167" y2="303"/>
+    <line x1="228" y1="280" x2="233" y2="303"/>
+    <line x1="248" y1="280" x2="257" y2="303"/>
+  </g>
+
+  <!-- shadow -->
+  <ellipse cx="200" cy="306" rx="72" ry="6" fill="#0c1f3d" opacity=".15"/>
+
+  <!-- wordmark -->
+  <text x="200" y="392" text-anchor="middle" font-family="'Space Grotesk',Arial,sans-serif" font-weight="700" font-size="52" letter-spacing="4" fill="#0c1f3d">PARAÍSO</text>
+  <text x="200" y="452" text-anchor="middle" font-family="'Space Grotesk',Arial,sans-serif" font-weight="700" font-size="52" letter-spacing="10" fill="#f9992b">HOGAR</text>
+</svg>
