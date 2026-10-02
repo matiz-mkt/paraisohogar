@@ -189,6 +189,9 @@
             <!-- Dynamic product cards -->
         </div>
 
+        <!-- Pagination -->
+        <nav id="pagination" class="hidden mt-8 flex flex-wrap items-center justify-center gap-1.5" aria-label="Páginas del catálogo"></nav>
+
         <!-- Empty State -->
         <div id="emptyState" class="hidden text-center py-16">
             <i class="fa-solid fa-box-open text-5xl text-stone-300 mb-3"></i>
@@ -225,6 +228,13 @@
                 <h3 class="text-xs font-bold text-stone-800">Pago en efectivo</h3>
                 <p class="text-[11px] text-stone-500 leading-snug">Pagá en Abitab o Red Pagos en todo el país.</p>
             </div>
+        </div>
+    </section>
+
+    <!-- Banner Mercado Pago -->
+    <section class="bg-brandCream" aria-label="Pagá con Mercado Pago">
+        <div class="max-w-7xl mx-auto px-4 py-6">
+            <img src="banner-mercadopago.svg" alt="Pagá con Mercado Pago" class="w-full h-auto" loading="lazy" width="1440" height="188">
         </div>
     </section>
 
@@ -294,6 +304,11 @@
             { image: 'banner-ph.webp', alt: 'Nuevos ingresos Living Paraíso — hasta 20% OFF en toda la tienda', link: '#categoria-nuevos', category: 'Nuevos' }
         ];
         let heroIndex = 0;
+
+        // Paginación del catálogo: 24 entra parejo en grillas de 2, 3 y 4 columnas
+        const PRODUCTS_PER_PAGE = 24;
+        let currentPage = 1;
+        let currentList = [];
         let heroTimer = null;
 
         function init() {
@@ -447,6 +462,7 @@
                 const matchesQuery = p.title.toLowerCase().includes(query);
                 return matchesCat && matchesQuery;
             });
+            currentPage = 1;
             renderProducts(filtered);
         }
 
@@ -462,7 +478,17 @@
             const empty = document.getElementById('emptyState');
             const countLabel = document.getElementById('productCount');
 
-            countLabel.textContent = `${list.length} producto${list.length !== 1 ? 's' : ''} disponible${list.length !== 1 ? 's' : ''}`;
+            currentList = list;
+            const totalPages = Math.max(1, Math.ceil(list.length / PRODUCTS_PER_PAGE));
+            currentPage = Math.min(Math.max(1, currentPage), totalPages);
+            const start = (currentPage - 1) * PRODUCTS_PER_PAGE;
+            const pageItems = list.slice(start, start + PRODUCTS_PER_PAGE);
+
+            countLabel.textContent = list.length > PRODUCTS_PER_PAGE
+                ? `Mostrando ${start + 1}–${start + pageItems.length} de ${list.length} productos`
+                : `${list.length} producto${list.length !== 1 ? 's' : ''} disponible${list.length !== 1 ? 's' : ''}`;
+
+            renderPagination(totalPages);
 
             if (list.length === 0) {
                 grid.innerHTML = '';
@@ -471,7 +497,7 @@
             }
 
             empty.classList.add('hidden');
-            grid.innerHTML = list.map(p => `
+            grid.innerHTML = pageItems.map(p => `
                 <div class="bg-white rounded-xl shadow-sm hover:shadow-xl border border-stone-200/80 overflow-hidden flex flex-col justify-between transition-all duration-200 group">
                     <div class="p-2.5 sm:p-4 relative">
                         <!-- Category Tag -->
@@ -528,6 +554,44 @@
                     </div>
                 </div>
             `).join('');
+        }
+
+        function renderPagination(totalPages) {
+            const nav = document.getElementById('pagination');
+            if (totalPages <= 1) {
+                nav.innerHTML = '';
+                nav.classList.add('hidden');
+                return;
+            }
+            nav.classList.remove('hidden');
+
+            // Primera, última y las vecinas de la actual; el resto se resume con "…"
+            const pages = [];
+            for (let i = 1; i <= totalPages; i++) {
+                if (i === 1 || i === totalPages || Math.abs(i - currentPage) <= 1) pages.push(i);
+                else if (pages[pages.length - 1] !== '…') pages.push('…');
+            }
+
+            const base = 'min-w-9 h-9 px-3 rounded-lg text-sm font-semibold flex items-center justify-center transition-colors';
+            const arrow = (target, disabled, icon, label) => `
+                <button type="button" onclick="goToPage(${target})" aria-label="${label}" ${disabled ? 'disabled' : ''}
+                    class="${base} ${disabled ? 'text-stone-300 cursor-not-allowed' : 'text-brandNavy hover:bg-stone-200'}">
+                    <i class="fa-solid ${icon}"></i>
+                </button>`;
+
+            nav.innerHTML = arrow(currentPage - 1, currentPage === 1, 'fa-chevron-left', 'Página anterior')
+                + pages.map(n => n === '…'
+                    ? `<span class="px-1 text-stone-400">…</span>`
+                    : `<button type="button" onclick="goToPage(${n})" aria-label="Página ${n}" ${n === currentPage ? 'aria-current="page"' : ''}
+                        class="${base} ${n === currentPage ? 'bg-brandNavy text-white' : 'bg-white border border-stone-200 text-stone-700 hover:bg-stone-100'}">${n}</button>`
+                ).join('')
+                + arrow(currentPage + 1, currentPage === totalPages, 'fa-chevron-right', 'Página siguiente');
+        }
+
+        function goToPage(n) {
+            currentPage = n;
+            renderProducts(currentList);
+            document.getElementById('catalogo').scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
         // Helper string method for safety
