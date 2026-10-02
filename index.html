@@ -588,18 +588,18 @@
                     <!-- Actions -->
                     <div class="p-2.5 sm:p-4 pt-0 space-y-1.5 sm:space-y-2">
                         <!-- WhatsApp Button -->
-                        <a href="${p.wa_url}" target="_blank" rel="noopener noreferrer"
+                        <a href="${p.wa_url}" target="_blank" rel="noopener noreferrer" title="Consultar por WhatsApp"
                             class="w-full flex items-center justify-center gap-1.5 sm:gap-2 bg-emerald-500 hover:bg-emerald-600 text-white text-[11px] sm:text-xs font-bold py-2 sm:py-2.5 px-2 sm:px-3 rounded-lg shadow-sm transition-colors duration-150">
                             <i class="fa-brands fa-whatsapp text-sm sm:text-base"></i>
-                            <span>Consultar por WhatsApp</span>
+                            <span>Consultar</span>
                         </a>
 
                         <!-- Mercado Libre Optional Buy Button -->
                         ${p.ml_url && p.ml_url !== 'nan' ? `
-                        <a href="${p.ml_url}" target="_blank" rel="noopener noreferrer"
+                        <a href="${p.ml_url}" target="_blank" rel="noopener noreferrer" title="Ver en Mercado Libre"
                             class="w-full flex items-center justify-center gap-1 sm:gap-1.5 bg-brandYellow hover:bg-brandYellowHover text-brandBlue text-[11px] sm:text-xs font-bold py-1.5 sm:py-2 px-2 sm:px-3 rounded-lg transition-colors duration-150">
                             <i class="fa-solid fa-cart-shopping text-[10px] sm:text-xs"></i>
-                            <span>Comprar en Mercado Libre</span>
+                            <span>Ver más</span>
                         </a>
                         ` : ''}
                     </div>
