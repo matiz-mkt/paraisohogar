@@ -290,6 +290,7 @@
 
         // Banners del hero: agregar más objetos acá para sumar slides a la galería
         const heroSlides = [
+            { image: 'banner-toronto.png', alt: 'Escritorio Toronto moderno de madera y acero 90x50x79cm', link: 'https://www.mercadolibre.com.uy/escritorio-toronto-moderno-de-madera-y-acero-90x50x79cm/up/MLUU4707245028?pdp_filters=shipping:mercadoenvios%7Cseller_id:1682905177#intervention_type=seller&position=1&search_layout=grid&type=cart_intervention&tracking_id=724c9539-d684-4f58-ae3f-0e7de2944fd6' },
             { image: 'banner-ph.webp', alt: 'Nuevos ingresos Living Paraíso — hasta 20% OFF en toda la tienda', link: '#categoria-nuevos', category: 'Nuevos' }
         ];
         let heroIndex = 0;
@@ -340,8 +341,9 @@
                 const clickHandler = s.category
                     ? `onclick="setCategory('${s.category}'); document.getElementById('catalogo').scrollIntoView({behavior:'smooth', block:'start'}); return false;"`
                     : '';
+                const externalAttrs = /^https?:\/\//.test(s.link || '') ? 'target="_blank" rel="noopener"' : '';
                 return `
-                <a href="${s.link || '#catalogo'}" ${clickHandler} class="w-full h-full flex-shrink-0 block">
+                <a href="${s.link || '#catalogo'}" ${clickHandler} ${externalAttrs} class="w-full h-full flex-shrink-0 block">
                     <img src="${s.image}" alt="${s.alt || ''}" class="w-full h-full object-cover">
                 </a>
             `;
@@ -349,14 +351,20 @@
 
             if (heroSlides.length > 1) {
                 dotsWrap.innerHTML = heroSlides.map((_, i) => `
-                    <button onclick="goToHeroSlide(${i})" aria-label="Ver banner ${i + 1}"
+                    <button type="button" onclick="goToHeroSlide(${i}, { manual: true })" aria-label="Ver banner ${i + 1}"
                         class="hero-dot h-2 rounded-full transition-all ${i === 0 ? 'bg-white w-5' : 'bg-white/50 w-2'}"></button>
                 `).join('');
-                heroTimer = setInterval(() => goToHeroSlide((heroIndex + 1) % heroSlides.length), 6000);
+                startHeroTimer();
             }
         }
 
-        function goToHeroSlide(i) {
+        function startHeroTimer() {
+            clearInterval(heroTimer);
+            heroTimer = setInterval(() => goToHeroSlide((heroIndex + 1) % heroSlides.length), 6000);
+        }
+
+        function goToHeroSlide(i, { manual = false } = {}) {
+            if (manual) startHeroTimer();
             heroIndex = i;
             const track = document.getElementById('heroTrack');
             track.style.transform = `translateX(-${i * 100}%)`;
