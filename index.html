@@ -150,6 +150,14 @@
         <div id="heroSlider" class="relative w-full overflow-hidden aspect-[16/7] sm:aspect-[21/7] md:aspect-[1920/500]">
             <div id="heroTrack" class="flex h-full transition-transform duration-700 ease-out"></div>
             <div id="heroDots" class="absolute bottom-3 sm:bottom-5 left-1/2 -translate-x-1/2 flex gap-2 z-10"></div>
+            <button type="button" id="heroPrev" onclick="stepHeroSlide(-1)" aria-label="Banner anterior"
+                class="hidden absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-10 w-8 h-8 sm:w-10 sm:h-10 items-center justify-center rounded-full bg-black/30 hover:bg-black/50 text-white backdrop-blur-sm transition">
+                <i class="fa-solid fa-chevron-left text-sm sm:text-base"></i>
+            </button>
+            <button type="button" id="heroNext" onclick="stepHeroSlide(1)" aria-label="Banner siguiente"
+                class="hidden absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-10 w-8 h-8 sm:w-10 sm:h-10 items-center justify-center rounded-full bg-black/30 hover:bg-black/50 text-white backdrop-blur-sm transition">
+                <i class="fa-solid fa-chevron-right text-sm sm:text-base"></i>
+            </button>
         </div>
     </section>
 
@@ -378,8 +386,18 @@
                     <button type="button" onclick="goToHeroSlide(${i}, { manual: true })" aria-label="Ver banner ${i + 1}"
                         class="hero-dot h-2 rounded-full transition-all ${i === 0 ? 'bg-white w-5' : 'bg-white/50 w-2'}"></button>
                 `).join('');
+                ['heroPrev', 'heroNext'].forEach(id => {
+                    const btn = document.getElementById(id);
+                    btn.classList.remove('hidden');
+                    btn.classList.add('flex');
+                });
                 startHeroTimer();
             }
+        }
+
+        function stepHeroSlide(dir) {
+            const n = heroSlides.length;
+            goToHeroSlide((heroIndex + dir + n) % n, { manual: true });
         }
 
         function startHeroTimer() {
