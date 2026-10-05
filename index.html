@@ -156,6 +156,23 @@
         </div>
     </header>
 
+    <!-- Categories Bar -->
+    <nav class="bg-brandNavyDark">
+        <div class="max-w-7xl mx-auto px-2 sm:px-4 flex items-center gap-1">
+            <button type="button" id="catNavPrev" aria-label="Ver categorías anteriores"
+                class="hidden md:flex flex-shrink-0 items-center justify-center w-7 h-7 rounded-full text-brandSand hover:bg-white/10 hover:text-white transition-colors">
+                <i class="fa-solid fa-chevron-left text-xs"></i>
+            </button>
+            <div class="flex gap-2 py-2 text-sm font-medium whitespace-nowrap overflow-x-auto no-scrollbar" id="categoryNav">
+                <!-- Dynamic categories populated via JS -->
+            </div>
+            <button type="button" id="catNavNext" aria-label="Ver más categorías"
+                class="hidden md:flex flex-shrink-0 items-center justify-center w-7 h-7 rounded-full text-brandSand hover:bg-white/10 hover:text-white transition-colors">
+                <i class="fa-solid fa-chevron-right text-xs"></i>
+            </button>
+        </div>
+    </nav>
+
     <!-- Hero Banner Slider -->
     <section class="relative bg-brandNavy" aria-label="Destacados y promociones">
         <!-- H1 conservado para SEO, no se muestra escrito sobre el banner -->
@@ -173,23 +190,6 @@
             </button>
         </div>
     </section>
-
-    <!-- Categories Bar -->
-    <nav class="bg-brandNavyDark">
-        <div class="max-w-7xl mx-auto px-2 sm:px-4 flex items-center gap-1">
-            <button type="button" id="catNavPrev" aria-label="Ver categorías anteriores"
-                class="hidden md:flex flex-shrink-0 items-center justify-center w-7 h-7 rounded-full text-brandSand hover:bg-white/10 hover:text-white transition-colors">
-                <i class="fa-solid fa-chevron-left text-xs"></i>
-            </button>
-            <div class="flex gap-2 py-2 text-sm font-medium whitespace-nowrap overflow-x-auto no-scrollbar" id="categoryNav">
-                <!-- Dynamic categories populated via JS -->
-            </div>
-            <button type="button" id="catNavNext" aria-label="Ver más categorías"
-                class="hidden md:flex flex-shrink-0 items-center justify-center w-7 h-7 rounded-full text-brandSand hover:bg-white/10 hover:text-white transition-colors">
-                <i class="fa-solid fa-chevron-right text-xs"></i>
-            </button>
-        </div>
-    </nav>
 
     <!-- Main Content Container -->
     <main id="catalogo" class="max-w-7xl mx-auto px-4 py-8 flex-1 w-full">
