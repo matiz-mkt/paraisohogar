@@ -191,6 +191,46 @@
         </div>
     </section>
 
+    <!-- Lo más destacado: banner + carrusel de productos de menos de $2.000 -->
+    <section id="destacados" class="max-w-7xl mx-auto px-4 pt-8 w-full scroll-mt-20" aria-labelledby="destacadosTitle">
+        <div class="flex items-center justify-between mb-4 gap-2">
+            <h2 id="destacadosTitle" class="text-2xl font-bold text-stone-800">Lo más destacado</h2>
+            <div class="hidden md:flex items-center gap-1.5">
+                <button type="button" id="featuredPrev" aria-label="Ver destacados anteriores"
+                    class="w-9 h-9 rounded-full bg-white border border-stone-200 text-brandNavy hover:bg-stone-100 flex items-center justify-center transition-colors">
+                    <i class="fa-solid fa-chevron-left text-sm"></i>
+                </button>
+                <button type="button" id="featuredNext" aria-label="Ver más destacados"
+                    class="w-9 h-9 rounded-full bg-white border border-stone-200 text-brandNavy hover:bg-stone-100 flex items-center justify-center transition-colors">
+                    <i class="fa-solid fa-chevron-right text-sm"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Banner -->
+        <a href="#catalogo" onclick="showUnderPriceInCatalog(); return false;"
+            class="relative block overflow-hidden rounded-2xl bg-gradient-to-r from-brandNavyDark via-brandNavy to-brandNavyDark text-white px-5 py-6 sm:px-10 sm:py-8 mb-5 shadow-md group">
+            <i class="fa-solid fa-tags absolute -right-4 -bottom-6 text-[110px] sm:text-[170px] text-white/5 rotate-12"></i>
+            <div class="relative flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div>
+                    <p class="text-brandSand text-xs sm:text-sm font-semibold uppercase tracking-widest">Precios que rinden</p>
+                    <p class="text-2xl sm:text-4xl font-black leading-tight mt-1">
+                        Todo por menos de <span class="text-brandOrange">$2.000</span>
+                    </p>
+                    <p class="text-brandSand text-xs sm:text-sm mt-1.5">Accesorios, tecnología y básicos para tu hogar. Hasta 12 cuotas.</p>
+                </div>
+                <span class="self-start sm:self-auto inline-flex items-center gap-2 bg-brandOrange group-hover:bg-brandOrangeHover text-white text-xs sm:text-sm font-bold py-2.5 px-5 rounded-full shadow-sm transition-colors">
+                    Ver todos <i class="fa-solid fa-arrow-right text-xs"></i>
+                </span>
+            </div>
+        </a>
+
+        <!-- Carrusel -->
+        <div id="featuredTrack" class="flex gap-3 sm:gap-6 overflow-x-auto no-scrollbar snap-x snap-mandatory pb-2">
+            <!-- Dynamic featured cards -->
+        </div>
+    </section>
+
     <!-- Main Content Container -->
     <main id="catalogo" class="max-w-7xl mx-auto px-4 py-8 flex-1 w-full">
         <!-- Section Header -->
@@ -352,12 +392,17 @@
         let currentList = [];
         let heroTimer = null;
 
+        // "Lo más destacado": productos por debajo de este precio (primero los que tienen descuento)
+        const FEATURED_MAX_PRICE = 2000;
+        const FEATURED_LIMIT = 12;
+
         function init() {
             const hashCat = getCategoryFromHash();
             if (hashCat) selectedCategory = hashCat;
 
             renderCategories();
             filterProducts();
+            renderFeatured();
             setupCategoryNavScroll();
             initHeroSlider();
             setupBackToTop();
@@ -558,7 +603,11 @@
             }
 
             empty.classList.add('hidden');
-            grid.innerHTML = pageItems.map(p => `
+            grid.innerHTML = pageItems.map(productCardHTML).join('');
+        }
+
+        function productCardHTML(p) {
+            return `
                 <div class="bg-white rounded-xl shadow-sm hover:shadow-xl border border-stone-200/80 overflow-hidden flex flex-col justify-between transition-all duration-200 group">
                     <div class="p-2.5 sm:p-4 relative">
                         <!-- Category Tag -->
@@ -614,7 +663,36 @@
                         ` : ''}
                     </div>
                 </div>
+            `;
+        }
+
+        function renderFeatured() {
+            const track = document.getElementById('featuredTrack');
+            if (!track) return;
+            const under = products.filter(p => {
+                const price = parsePrice(p.price_final);
+                return price > 0 && price < FEATURED_MAX_PRICE;
+            });
+            const items = [...under.filter(p => p.discount_pct), ...under.filter(p => !p.discount_pct)].slice(0, FEATURED_LIMIT);
+            if (items.length === 0) {
+                document.getElementById('destacados').classList.add('hidden');
+                return;
+            }
+            track.innerHTML = items.map(p => `
+                <div class="w-40 sm:w-56 flex-shrink-0 snap-start flex [&>div]:w-full">${productCardHTML(p)}</div>
             `).join('');
+
+            const step = () => track.clientWidth * 0.8;
+            document.getElementById('featuredPrev').addEventListener('click', () => track.scrollBy({ left: -step(), behavior: 'smooth' }));
+            document.getElementById('featuredNext').addEventListener('click', () => track.scrollBy({ left: step(), behavior: 'smooth' }));
+        }
+
+        // Botón "Ver todos" del banner: muestra el catálogo completo ordenado de menor a mayor precio
+        function showUnderPriceInCatalog() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('sortSelect').value = 'price-asc';
+            setCategory('Todas');
+            document.getElementById('catalogo').scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
         function renderPagination(totalPages) {
