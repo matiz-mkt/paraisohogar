@@ -58,6 +58,11 @@ function loadProducts() {
     return JSON.parse(line.trim().replace(/^const products = /, '').replace(/;$/, ''));
 }
 
+// Imagen propia de la categoría en la raíz del sitio (categoria-<slug>.webp/.png/.jpg), o undefined si no hay
+const categoryImage = landing => ['webp', 'png', 'jpg', 'jpeg']
+    .map(ext => `categoria-${landing.slug}.${ext}`)
+    .find(f => fs.existsSync(path.join(ROOT, f)));
+
 // Solo productos cuyo nombre arranca con la palabra (ej: "Escritorio ...", no "Silla ... Escritorio")
 const productsFor = (products, landing) => products.filter(p => norm(p.title).startsWith(landing.prefix));
 
@@ -134,7 +139,8 @@ function jsonLd(landing, items) {
 function landingPage(landing, items, other) {
     const url = `${SITE}/${landing.slug}/`;
     const minPrice = Math.min(...items.map(p => parsePrice(p.price_final)).filter(Boolean));
-    const ogImage = items[0] ? items[0].image : `${SITE}/og-image.png?v=2`;
+    const heroImage = categoryImage(landing);
+    const ogImage = heroImage ? `${SITE}/${heroImage}` : items[0] ? items[0].image : `${SITE}/og-image.png?v=2`;
     const waText = encodeURIComponent(`Hola! Vengo desde la web de paraisohogar.uy y quiero más información sobre ${landing.name.toLowerCase()}`);
 
     return `<!DOCTYPE html>
@@ -245,7 +251,12 @@ ${jsonLd(landing, items)}
 
         <!-- Hero -->
         <section class="max-w-7xl mx-auto px-4 pt-4">
-            <div class="bg-gradient-to-r from-brandNavyDark via-brandNavy to-brandNavyDark text-white rounded-2xl px-6 py-8 sm:px-10 sm:py-10">
+            <div class="relative overflow-hidden bg-gradient-to-r from-brandNavyDark via-brandNavy to-brandNavyDark text-white rounded-2xl px-6 py-8 sm:px-10 sm:py-10">${heroImage ? `
+                <img src="/${heroImage}" alt="" width="1200" height="900" fetchpriority="high" decoding="async"
+                    class="absolute inset-0 w-full h-full object-cover">
+                <!-- Capa azul para que el texto blanco se lea sobre la foto -->
+                <div class="absolute inset-0 bg-gradient-to-r from-brandNavyDark/95 via-brandNavyDark/75 to-brandNavyDark/20" aria-hidden="true"></div>` : ''}
+                <div class="relative">
                 <p class="text-brandSand text-xs sm:text-sm font-semibold uppercase tracking-widest">${esc(landing.tagline)}</p>
                 <h1 class="text-3xl sm:text-5xl font-black leading-tight mt-1">${esc(landing.h1)}</h1>
                 <p class="text-brandSand text-sm sm:text-base mt-3 max-w-3xl leading-relaxed">${esc(landing.intro)}</p>
@@ -254,6 +265,7 @@ ${jsonLd(landing, items)}
                     <li class="inline-flex items-center gap-1.5"><i class="fa-solid fa-credit-card text-brandOrange"></i> Hasta 12 cuotas</li>
                     <li class="inline-flex items-center gap-1.5"><i class="fa-solid fa-shield-halved text-brandOrange"></i> Compra protegida</li>
                 </ul>
+                </div>
             </div>
         </section>
 
@@ -349,9 +361,7 @@ ${jsonLd(landing, items)}
 function homeSection(groups) {
     const cards = groups.map(({ landing, items }) => {
         // Imagen propia de la categoría (1200x900, 4:3) en la raíz del sitio; mientras no exista se usa la foto del primer producto
-        const file = ['webp', 'png', 'jpg', 'jpeg']
-            .map(ext => `categoria-${landing.slug}.${ext}`)
-            .find(f => fs.existsSync(path.join(ROOT, f)));
+        const file = categoryImage(landing);
         const hasBanner = Boolean(file);
         const img = hasBanner
             ? `<img src="${file}" alt="${esc(landing.name)} en Paraíso Hogar" width="1200" height="900" loading="lazy" decoding="async"
