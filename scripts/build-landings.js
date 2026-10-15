@@ -293,15 +293,15 @@ ${jsonLd(landing, items)}
             </div>
         </section>` : `
         <section class="max-w-7xl mx-auto px-4 pt-4">
-            <div class="relative overflow-hidden bg-gradient-to-r from-brandNavyDark via-brandNavy to-brandNavyDark text-white rounded-2xl px-6 py-8 sm:px-10 sm:py-10">${heroImage ? `
+            <div class="relative overflow-hidden bg-[#3483fa] text-white rounded-2xl px-6 py-8 sm:px-10 sm:py-10">${heroImage ? `
                 <img src="/${heroImage}" alt="" width="1200" height="900" fetchpriority="high" decoding="async"
                     class="absolute inset-0 w-full h-full object-cover">
-                <!-- Capa azul para que el texto blanco se lea sobre la foto -->
-                <div class="absolute inset-0 bg-gradient-to-r from-brandNavyDark/95 via-brandNavyDark/75 to-brandNavyDark/20" aria-hidden="true"></div>` : ''}
+                <!-- Capa azul #3483fa para que el texto blanco se lea sobre la foto -->
+                <div class="absolute inset-0 bg-gradient-to-r from-[#3483fa]/95 via-[#3483fa]/75 to-[#3483fa]/20" aria-hidden="true"></div>` : ''}
                 <div class="relative">
-                <p class="text-brandSand text-xs sm:text-sm font-semibold uppercase tracking-widest">${esc(landing.tagline)}</p>
+                <p class="text-white/90 text-xs sm:text-sm font-semibold uppercase tracking-widest">${esc(landing.tagline)}</p>
                 <h1 class="text-3xl sm:text-5xl font-black leading-tight mt-1">${esc(landing.h1)}</h1>
-                <p class="text-brandSand text-sm sm:text-base mt-3 max-w-3xl leading-relaxed">${esc(landing.intro)}</p>
+                <p class="text-white/90 text-sm sm:text-base mt-3 max-w-3xl leading-relaxed">${esc(landing.intro)}</p>
                 <ul class="flex flex-wrap gap-x-5 gap-y-2 mt-5 text-xs sm:text-sm">
                     <li class="inline-flex items-center gap-1.5"><i class="fa-solid fa-truck-fast text-brandOrange"></i> Envíos a todo Uruguay</li>
                     <li class="inline-flex items-center gap-1.5"><i class="fa-solid fa-credit-card text-brandOrange"></i> Hasta 12 cuotas</li>
