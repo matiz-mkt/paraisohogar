@@ -349,8 +349,10 @@ ${jsonLd(landing, items)}
 function homeSection(groups) {
     const cards = groups.map(({ landing, items }) => {
         // Imagen propia de la categoría (1200x900, 4:3) en la raíz del sitio; mientras no exista se usa la foto del primer producto
-        const file = `categoria-${landing.slug}.webp`;
-        const hasBanner = fs.existsSync(path.join(ROOT, file));
+        const file = ['webp', 'png', 'jpg', 'jpeg']
+            .map(ext => `categoria-${landing.slug}.${ext}`)
+            .find(f => fs.existsSync(path.join(ROOT, f)));
+        const hasBanner = Boolean(file);
         const img = hasBanner
             ? `<img src="${file}" alt="${esc(landing.name)} en Paraíso Hogar" width="1200" height="900" loading="lazy" decoding="async"
                         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">`
