@@ -293,19 +293,16 @@ ${jsonLd(landing, items)}
             </div>
         </section>` : `
         <section class="max-w-7xl mx-auto px-4 pt-4">
-            <div class="relative overflow-hidden bg-[#3483fa] text-white rounded-2xl px-6 py-8 sm:px-10 sm:py-10">${heroImage ? `
-                <img src="/${heroImage}" alt="" width="1200" height="900" fetchpriority="high" decoding="async"
-                    class="absolute inset-0 w-full h-full object-cover">
-                <!-- Capa azul #3483fa para que el texto blanco se lea sobre la foto -->
-                <div class="absolute inset-0 bg-gradient-to-r from-[#3483fa]/95 via-[#3483fa]/75 to-[#3483fa]/20" aria-hidden="true"></div>` : ''}
-                <div class="relative">
+            <!-- Degradado #3483fa sin foto de fondo: arranca al 100% y se aclara hacia la derecha -->
+            <div class="relative overflow-hidden bg-white text-white rounded-2xl">
+                <div class="bg-gradient-to-r from-[#3483fa] via-[#3483fa]/75 to-[#3483fa]/20 px-6 py-8 sm:px-10 sm:py-10">
                 <p class="text-white/90 text-xs sm:text-sm font-semibold uppercase tracking-widest">${esc(landing.tagline)}</p>
                 <h1 class="text-3xl sm:text-5xl font-black leading-tight mt-1">${esc(landing.h1)}</h1>
                 <p class="text-white/90 text-sm sm:text-base mt-3 max-w-3xl leading-relaxed">${esc(landing.intro)}</p>
                 <ul class="flex flex-wrap gap-x-5 gap-y-2 mt-5 text-xs sm:text-sm">
-                    <li class="inline-flex items-center gap-1.5"><i class="fa-solid fa-truck-fast text-brandOrange"></i> Envíos a todo Uruguay</li>
-                    <li class="inline-flex items-center gap-1.5"><i class="fa-solid fa-credit-card text-brandOrange"></i> Hasta 12 cuotas</li>
-                    <li class="inline-flex items-center gap-1.5"><i class="fa-solid fa-shield-halved text-brandOrange"></i> Compra protegida</li>
+                    <li class="inline-flex items-center gap-1.5"><i class="fa-solid fa-truck-fast text-white"></i> Envíos a todo Uruguay</li>
+                    <li class="inline-flex items-center gap-1.5"><i class="fa-solid fa-credit-card text-white"></i> Hasta 12 cuotas</li>
+                    <li class="inline-flex items-center gap-1.5"><i class="fa-solid fa-shield-halved text-white"></i> Compra protegida</li>
                 </ul>
                 </div>
             </div>
