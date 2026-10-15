@@ -92,7 +92,7 @@ function productCard(p, i) {
                             <i class="fa-brands fa-whatsapp text-sm sm:text-base"></i><span>Consultar</span>
                         </a>
                         ${hasMl(p) ? `<a href="${esc(p.ml_url)}" target="_blank" rel="noopener noreferrer" title="Ver ${esc(p.title)} en Mercado Libre"
-                            class="w-full flex items-center justify-center gap-1 sm:gap-1.5 bg-brandYellow hover:bg-brandYellowHover text-brandBlue text-[11px] sm:text-xs font-bold py-1.5 sm:py-2 px-2 sm:px-3 rounded-lg transition-colors duration-150">
+                            class="w-full flex items-center justify-center gap-1 sm:gap-1.5 bg-[#3483fa] hover:bg-[#2968c8] text-white text-[11px] sm:text-xs font-bold py-1.5 sm:py-2 px-2 sm:px-3 rounded-lg transition-colors duration-150">
                             <i class="fa-solid fa-cart-shopping text-[10px] sm:text-xs"></i><span>Ver más</span>
                         </a>` : ''}
                     </div>
