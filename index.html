@@ -64,6 +64,8 @@
                         brandOrangeHover: '#DB8620',
                         brandSand: '#A8C4E0',
                         brandCream: '#F5F8FB',
+                        /* Amarillo Mercado Libre: fondo de la franja de logo + buscador */
+                        mlYellow: '#FFE600',
                         /* Se conservan solo para el botón "Comprar en Mercado Libre" */
                         brandBlue: '#003399',
                         brandBlueDark: '#002266',
@@ -95,7 +97,7 @@
     <!-- End Google Tag Manager (noscript) -->
 
     <!-- Header Navigation -->
-    <header class="bg-brandNavy text-white sticky top-0 z-50 shadow-md">
+    <header class="bg-mlYellow text-brandNavy sticky top-0 z-50 shadow-md">
         <!-- Top Bar -->
         <div class="bg-brandNavyDark text-stone-200 text-[10px] sm:text-xs py-1.5 px-2 sm:px-4 text-center border-b border-white/10 overflow-hidden">
             <span class="inline-flex items-center gap-2 sm:gap-5 flex-nowrap justify-center whitespace-nowrap">
@@ -119,14 +121,14 @@
             <!-- Logo -->
             <a href="#" class="flex items-center gap-3 group">
                 <img src="logo.webp" alt="Paraíso Hogar - Artículos para tu casa" width="64" height="64" class="h-14 w-14 sm:h-16 sm:w-16 rounded-full shrink-0">
-                <span class="hidden sm:inline font-logo uppercase text-2xl font-extrabold tracking-tight text-white leading-none">Paraiso<span class="text-brandOrange">hogar</span></span>
+                <span class="hidden sm:inline font-logo uppercase text-2xl font-extrabold tracking-tight text-brandNavy leading-none">Paraiso<span class="font-semibold">hogar</span></span>
             </a>
 
             <!-- Search Bar -->
             <div class="flex-1 max-w-lg min-w-[120px] sm:min-w-[260px]">
                 <div class="relative">
                     <input type="text" id="searchInput" oninput="filterProducts()" placeholder="¿Qué estás buscando?"
-                        class="w-full pl-10 pr-9 py-2 rounded-full text-stone-800 bg-white placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-brandOrange text-sm shadow-inner">
+                        class="w-full pl-10 pr-9 py-2 rounded-full text-stone-800 bg-white placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-brandNavy text-sm shadow-sm">
                     <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-2.5 text-stone-400 text-sm"></i>
                     <button type="button" id="searchClearBtn" onclick="clearSearch()" title="Borrar búsqueda" aria-label="Borrar búsqueda"
                         class="hidden absolute right-2.5 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-stone-300 hover:bg-stone-400 text-white flex items-center justify-center text-[10px] transition-colors">
@@ -138,19 +140,19 @@
             <!-- Header Actions: WhatsApp + Instagram -->
             <div class="hidden md:flex items-center gap-1.5">
                 <a href="https://wa.me/59899451258?text=Vengo%20desde%20la%20web%20de%20paraisohogar.uy" target="_blank" rel="noopener noreferrer" title="Consultar por WhatsApp" aria-label="Consultar por WhatsApp"
-                    class="flex items-center justify-center w-10 h-10 rounded-full bg-white/5 hover:bg-white/15 text-brandSand hover:text-white text-xl transition-colors">
+                    class="flex items-center justify-center w-10 h-10 rounded-full bg-black/5 hover:bg-black/10 text-brandNavy text-xl transition-colors">
                     <i class="fa-brands fa-whatsapp"></i>
                 </a>
                 <a href="https://www.instagram.com/paraisohogar.uy/" target="_blank" rel="noopener noreferrer" title="Seguinos en Instagram" aria-label="Seguinos en Instagram"
-                    class="flex items-center justify-center w-10 h-10 rounded-full bg-white/5 hover:bg-white/15 text-brandSand hover:text-white text-lg transition-colors">
+                    class="flex items-center justify-center w-10 h-10 rounded-full bg-black/5 hover:bg-black/10 text-brandNavy text-lg transition-colors">
                     <i class="fa-brands fa-instagram"></i>
                 </a>
                 <a href="https://www.tiktok.com/@paraisohogar" target="_blank" rel="noopener noreferrer" title="Seguinos en TikTok" aria-label="Seguinos en TikTok"
-                    class="flex items-center justify-center w-10 h-10 rounded-full bg-white/5 hover:bg-white/15 text-brandSand hover:text-white text-lg transition-colors">
+                    class="flex items-center justify-center w-10 h-10 rounded-full bg-black/5 hover:bg-black/10 text-brandNavy text-lg transition-colors">
                     <i class="fa-brands fa-tiktok"></i>
                 </a>
                 <a href="https://www.youtube.com/@Para%C3%ADsoHogar" target="_blank" rel="noopener noreferrer" title="Seguinos en YouTube" aria-label="Seguinos en YouTube"
-                    class="flex items-center justify-center w-10 h-10 rounded-full bg-white/5 hover:bg-white/15 text-brandSand hover:text-white text-lg transition-colors">
+                    class="flex items-center justify-center w-10 h-10 rounded-full bg-black/5 hover:bg-black/10 text-brandNavy text-lg transition-colors">
                     <i class="fa-brands fa-youtube"></i>
                 </a>
             </div>
