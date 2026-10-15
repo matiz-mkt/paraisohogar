@@ -42,6 +42,25 @@ const LANDINGS = [
             ['fa-weight-hanging', 'Material', 'Metal y madera combinan resistencia y estilo; el bambú suma calidez natural.'],
             ['fa-door-closed', 'Con o sin puertas', 'Las puertas ocultan lo que no querés a la vista y protegen del polvo.']
         ]
+    },
+    {
+        // Landing de marca: no va en "Categorías destacadas", se enlaza desde el banner del hero
+        slug: 'philips',
+        brand: 'philips',
+        featured: false,
+        name: 'Philips',
+        title: 'Philips en Uruguay | Auriculares, Parlantes y Cuidado Personal | Paraíso Hogar',
+        description: 'Comprá productos Philips en Uruguay: auriculares inalámbricos, parlantes y torres de sonido Bluetooth, radios con CD, rasuradoras y recortadoras de barba. Envíos a todo el país y hasta 12 cuotas.',
+        h1: 'Philips',
+        tagline: 'Productos originales de la marca',
+        intro: 'Descubrí nuestra selección de productos Philips: auriculares inalámbricos y con cable, parlantes y torres de sonido Bluetooth con luces LED, radios con reproductor de CD, rasuradoras y recortadoras de barba. Calidad Philips con envío a todo Uruguay y compra protegida por Mercado Libre.',
+        countLabel: 'productos Philips',
+        guideTitle: '¿Cómo elegir tu producto Philips?',
+        tips: [
+            ['fa-headphones', 'Auriculares', 'Los inalámbricos TWS son ideales para el día a día; los vincha suman batería y comodidad para escuchar por horas.'],
+            ['fa-volume-high', 'Parlantes y torres', 'Para fiestas elegí torres con más watts, luces LED y ruedas; para llevar a todos lados, un parlante portátil.'],
+            ['fa-user', 'Cuidado personal', 'Las rasuradoras Philips son prácticas y portátiles; las recortadoras te permiten definir el largo de la barba.']
+        ]
     }
 ];
 
@@ -63,8 +82,12 @@ const categoryImage = landing => ['webp', 'png', 'jpg', 'jpeg']
     .map(ext => `categoria-${landing.slug}.${ext}`)
     .find(f => fs.existsSync(path.join(ROOT, f)));
 
-// Solo productos cuyo nombre arranca con la palabra (ej: "Escritorio ...", no "Silla ... Escritorio")
-const productsFor = (products, landing) => products.filter(p => norm(p.title).startsWith(landing.prefix));
+// Landings de marca: la marca en cualquier parte del nombre.
+// Categorías: solo productos cuyo nombre arranca con la palabra (ej: "Escritorio ...", no "Silla ... Escritorio")
+const productsFor = (products, landing) => products.filter(p => landing.brand
+    ? new RegExp(`\\b${landing.brand}\\b`).test(norm(p.title))
+    : norm(p.title).startsWith(landing.prefix));
+const isFeatured = landing => landing.featured !== false;
 
 // --- tarjeta de producto (misma estética que la grilla de index.html) ---
 function productCard(p, i) {
@@ -273,7 +296,7 @@ ${jsonLd(landing, items)}
         <section class="max-w-7xl mx-auto px-4 py-8" aria-labelledby="listadoTitle">
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 pb-4 border-b border-stone-200 gap-2">
                 <div>
-                    <h2 id="listadoTitle" class="text-2xl font-bold text-stone-800">${items.length} ${esc(landing.name.toLowerCase())} disponibles</h2>
+                    <h2 id="listadoTitle" class="text-2xl font-bold text-stone-800">${items.length} ${esc(landing.countLabel || landing.name.toLowerCase())} disponibles</h2>
                     <p class="text-xs text-stone-500">Desde ${esc('$' + minPrice.toLocaleString('es-UY'))} · precios en pesos uruguayos</p>
                 </div>
                 <label class="flex items-center gap-2 text-xs text-stone-500">
@@ -294,7 +317,7 @@ ${jsonLd(landing, items)}
         <!-- Guía de compra -->
         <section class="bg-white border-y border-stone-200" aria-labelledby="guiaTitle">
             <div class="max-w-7xl mx-auto px-4 py-10">
-                <h2 id="guiaTitle" class="text-xl sm:text-2xl font-bold text-stone-800">¿Cómo elegir tu ${esc(landing.singular)}?</h2>
+                <h2 id="guiaTitle" class="text-xl sm:text-2xl font-bold text-stone-800">${esc(landing.guideTitle || `¿Cómo elegir tu ${landing.singular}?`)}</h2>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 mt-6">${landing.tips.map(([icon, t, d]) => `
                     <div class="rounded-2xl bg-brandCream p-5">
                         <i class="fa-solid ${icon} text-2xl text-brandOrange"></i>
@@ -418,13 +441,15 @@ ${urls.map(u => `    <url>
 // --- main ---
 const products = loadProducts();
 const groups = LANDINGS.map(landing => ({ landing, items: productsFor(products, landing) }));
-groups.forEach(({ landing, items }, i) => {
+const featured = LANDINGS.filter(isFeatured);
+groups.forEach(({ landing, items }) => {
     if (items.length === 0) throw new Error(`No hay productos para ${landing.name}`);
-    const other = LANDINGS[(i + 1) % LANDINGS.length];
+    // Link "Seguí explorando": la siguiente categoría destacada distinta de esta
+    const other = featured[(featured.indexOf(landing) + 1) % featured.length];
     fs.mkdirSync(path.join(ROOT, landing.slug), { recursive: true });
     fs.writeFileSync(path.join(ROOT, landing.slug, 'index.html'), landingPage(landing, items, other));
     console.log(`/${landing.slug}/ -> ${items.length} productos`);
 });
-updateHome(groups);
+updateHome(groups.filter(g => isFeatured(g.landing)));
 writeSitemap();
 console.log('index.html (Categorías destacadas) y sitemap.xml actualizados');
