@@ -556,7 +556,7 @@
             const cats = getCategories();
             nav.innerHTML = cats.map(cat => `
                 <a href="${cat === 'Todas' ? '#' : '#categoria-' + slugify(cat)}" onclick="setCategory('${cat}'); return false;"
-                    class="flex-shrink-0 px-3 py-1.5 rounded-full text-xs font-semibold transition-all duration-150 ${selectedCategory === cat ? 'bg-brandOrange text-white shadow-sm' : 'text-brandNavy hover:bg-stone-100'}">
+                    class="flex-shrink-0 px-3 py-1.5 rounded-full text-xs font-semibold transition-all duration-150 ${selectedCategory === cat ? 'bg-[#3483fa] text-white shadow-sm' : 'text-brandNavy hover:bg-stone-100'}">
                     ${cat}
                 </a>
             `).join('');
@@ -650,7 +650,7 @@
                         <!-- Product Image -->
                         <div class="w-full h-28 sm:h-48 bg-white flex items-center justify-center overflow-hidden mb-2 sm:mb-3 relative">
                             ${p.discount_pct ? `
-                            <span class="absolute top-0 right-0 bg-brandOrange text-white text-[10px] sm:text-xs font-black px-1.5 sm:px-2 py-0.5 rounded-bl-lg rounded-tr-sm z-10">
+                            <span class="absolute top-0 right-0 bg-[#00a650] text-white text-[10px] sm:text-xs font-black px-1.5 sm:px-2 py-0.5 rounded-bl-lg rounded-tr-sm z-10">
                                 -${p.discount_pct}%
                             </span>
                             ` : ''}

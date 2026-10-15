@@ -99,7 +99,7 @@ function productCard(p, i) {
                 <li class="bg-white rounded-xl shadow-sm hover:shadow-xl border border-stone-200/80 overflow-hidden flex flex-col justify-between transition-all duration-200 group" data-price="${parsePrice(p.price_final)}" data-pos="${i}">
                     <article class="p-2.5 sm:p-4 relative">
                         <div class="w-full h-28 sm:h-48 bg-white flex items-center justify-center overflow-hidden mb-2 sm:mb-3 relative">
-                            ${p.discount_pct ? `<span class="absolute top-0 right-0 bg-brandOrange text-white text-[10px] sm:text-xs font-black px-1.5 sm:px-2 py-0.5 rounded-bl-lg rounded-tr-sm z-10">-${p.discount_pct}%</span>` : ''}
+                            ${p.discount_pct ? `<span class="absolute top-0 right-0 bg-[#00a650] text-white text-[10px] sm:text-xs font-black px-1.5 sm:px-2 py-0.5 rounded-bl-lg rounded-tr-sm z-10">-${p.discount_pct}%</span>` : ''}
                             ${img}
                         </div>
                         <h3 class="font-bold text-stone-800 text-xs sm:text-sm line-clamp-2 leading-snug mb-2 group-hover:text-brandNavy transition-colors" title="${esc(p.title)}">${esc(p.title)}</h3>
