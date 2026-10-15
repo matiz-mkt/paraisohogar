@@ -48,6 +48,8 @@ const LANDINGS = [
         slug: 'philips',
         brand: 'philips',
         featured: false,
+        // Mismo banner del slider de la home (1920x500, con texto propio): se muestra entero, no de fondo
+        banner: 'banner-philips.webp',
         name: 'Philips',
         title: 'Philips en Uruguay | Auriculares, Parlantes y Cuidado Personal | Paraíso Hogar',
         description: 'Comprá productos Philips en Uruguay: auriculares inalámbricos, parlantes y torres de sonido Bluetooth, radios con CD, rasuradoras y recortadoras de barba. Envíos a todo el país y hasta 12 cuotas.',
@@ -104,7 +106,7 @@ function productCard(p, i) {
                         <div class="mt-2 pt-2 border-t border-stone-100">
                             <div class="flex items-baseline gap-1.5 sm:gap-2 flex-wrap">
                                 ${p.price_old && p.price_old !== '-' ? `<span class="text-[10px] sm:text-xs text-stone-400 line-through">${esc(p.price_old)}</span>` : ''}
-                                <span class="text-base sm:text-lg font-black text-brandOrange">${esc(p.price_final)}</span>
+                                <span class="text-base sm:text-lg font-black text-black">${esc(p.price_final)}</span>
                             </div>
                             ${p.installments ? `<p class="text-[10px] sm:text-[11px] text-stone-500 mt-0.5">${esc(p.installments)}</p>` : ''}
                         </div>
@@ -163,7 +165,7 @@ function landingPage(landing, items, other) {
     const url = `${SITE}/${landing.slug}/`;
     const minPrice = Math.min(...items.map(p => parsePrice(p.price_final)).filter(Boolean));
     const heroImage = categoryImage(landing);
-    const ogImage = heroImage ? `${SITE}/${heroImage}` : items[0] ? items[0].image : `${SITE}/og-image.png?v=2`;
+    const ogImage = landing.banner ? `${SITE}/${landing.banner}` : heroImage ? `${SITE}/${heroImage}` : items[0] ? items[0].image : `${SITE}/og-image.png?v=2`;
     const waText = encodeURIComponent(`Hola! Vengo desde la web de paraisohogar.uy y quiero más información sobre ${landing.name.toLowerCase()}`);
 
     return `<!DOCTYPE html>
@@ -272,7 +274,24 @@ ${jsonLd(landing, items)}
             </ol>
         </nav>
 
-        <!-- Hero -->
+        <!-- Hero -->${landing.banner ? `
+        <section class="max-w-7xl mx-auto px-4 pt-4">
+            <!-- El botón "Ver más" del banner baja al listado de productos -->
+            <a href="#listadoTitle" class="block overflow-hidden rounded-2xl shadow-sm">
+                <img src="/${landing.banner}" alt="${esc(landing.name)} en Paraíso Hogar" width="1920" height="500" fetchpriority="high" decoding="async"
+                    class="w-full h-auto">
+            </a>
+            <div class="mt-4 bg-white border border-stone-200/80 rounded-2xl px-6 py-6 sm:px-10">
+                <p class="text-brandOrange text-xs sm:text-sm font-semibold uppercase tracking-widest">${esc(landing.tagline)}</p>
+                <h1 class="text-2xl sm:text-4xl font-black leading-tight mt-1 text-brandNavy">${esc(landing.h1)}</h1>
+                <p class="text-stone-600 text-sm sm:text-base mt-3 max-w-3xl leading-relaxed">${esc(landing.intro)}</p>
+                <ul class="flex flex-wrap gap-x-5 gap-y-2 mt-5 text-xs sm:text-sm text-stone-700">
+                    <li class="inline-flex items-center gap-1.5"><i class="fa-solid fa-truck-fast text-brandOrange"></i> Envíos a todo Uruguay</li>
+                    <li class="inline-flex items-center gap-1.5"><i class="fa-solid fa-credit-card text-brandOrange"></i> Hasta 12 cuotas</li>
+                    <li class="inline-flex items-center gap-1.5"><i class="fa-solid fa-shield-halved text-brandOrange"></i> Compra protegida</li>
+                </ul>
+            </div>
+        </section>` : `
         <section class="max-w-7xl mx-auto px-4 pt-4">
             <div class="relative overflow-hidden bg-gradient-to-r from-brandNavyDark via-brandNavy to-brandNavyDark text-white rounded-2xl px-6 py-8 sm:px-10 sm:py-10">${heroImage ? `
                 <img src="/${heroImage}" alt="" width="1200" height="900" fetchpriority="high" decoding="async"
@@ -290,7 +309,7 @@ ${jsonLd(landing, items)}
                 </ul>
                 </div>
             </div>
-        </section>
+        </section>`}
 
         <!-- Productos -->
         <section class="max-w-7xl mx-auto px-4 py-8" aria-labelledby="listadoTitle">

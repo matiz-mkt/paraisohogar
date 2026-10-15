@@ -406,9 +406,9 @@
 
         // Banners del hero: agregar más objetos acá para sumar slides a la galería
         const heroSlides = [
-            { image: 'banner-philips.webp', alt: 'Philips — rasuradoras, auriculares y parlantes. Ver más', link: '/philips/' },
             { image: 'banner-toronto.png', alt: 'Escritorio Toronto moderno de madera y acero 90x50x79cm', link: '/escritorios/' },
-            { image: 'banner-ph.webp', alt: 'Nuevos ingresos Living Paraíso — hasta 20% OFF en toda la tienda', link: '#categoria-nuevos', category: 'Nuevos' }
+            { image: 'banner-ph.webp', alt: 'Nuevos ingresos Living Paraíso — hasta 20% OFF en toda la tienda', link: '#categoria-nuevos', category: 'Nuevos' },
+            { image: 'banner-philips.webp', alt: 'Philips — rasuradoras, auriculares y parlantes. Ver más', link: '/philips/' }
         ];
         let heroIndex = 0;
 
@@ -668,7 +668,7 @@
                         <div class="mt-2 pt-2 border-t border-stone-100">
                             <div class="flex items-baseline gap-1.5 sm:gap-2 flex-wrap">
                                 ${p.price_old !== '-' ? `<span class="text-[10px] sm:text-xs text-stone-400 line-through">${p.price_old}</span>` : ''}
-                                <span class="text-base sm:text-lg font-black text-brandOrange">${p.price_final}</span>
+                                <span class="text-base sm:text-lg font-black text-black">${p.price_final}</span>
                             </div>
                             ${p.installments ? `
                             <p class="text-[10px] sm:text-[11px] text-stone-500 mt-0.5">${p.installments}</p>
