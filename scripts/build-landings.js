@@ -348,23 +348,21 @@ ${jsonLd(landing, items)}
 // --- sección "Categorías destacadas" de la home ---
 function homeSection(groups) {
     const cards = groups.map(({ landing, items }) => {
-        const thumbs = items.slice(0, 4).map(p => `
-                        <div class="bg-white rounded-lg flex items-center justify-center p-1.5 sm:p-3 aspect-square">
-                            <img src="${esc(p.image)}" alt="${esc(p.title)}" width="150" height="150" loading="lazy" decoding="async" class="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform duration-300">
-                        </div>`).join('');
+        // Imagen propia de la categoría (1200x900, 4:3) en la raíz del sitio; mientras no exista se usa la foto del primer producto
+        const file = `categoria-${landing.slug}.webp`;
+        const hasBanner = fs.existsSync(path.join(ROOT, file));
+        const img = hasBanner
+            ? `<img src="${file}" alt="${esc(landing.name)} en Paraíso Hogar" width="1200" height="900" loading="lazy" decoding="async"
+                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">`
+            : `<img src="${esc(items[0].image)}" alt="${esc(landing.name)} en Paraíso Hogar" width="1200" height="900" loading="lazy" decoding="async"
+                        class="w-full h-full object-contain p-3 sm:p-6 bg-white group-hover:scale-105 transition-transform duration-500">`;
         return `
-            <a href="/${landing.slug}/" class="group bg-white rounded-2xl shadow-sm hover:shadow-xl border border-stone-200/80 p-3 sm:p-5 flex flex-col transition-shadow">
-                <div class="flex items-start justify-between gap-2 mb-3 sm:mb-4">
-                    <div>
-                        <h3 class="text-lg sm:text-2xl font-black text-stone-800 group-hover:text-brandNavy transition-colors">${esc(landing.name)}</h3>
-                        <p class="text-[11px] sm:text-sm text-stone-500">${items.length} modelos · ${esc(landing.tagline.toLowerCase())}</p>
-                    </div>
+            <a href="/${landing.slug}/" class="group block" title="Ver ${esc(landing.name.toLowerCase())}">
+                <div class="aspect-[4/3] overflow-hidden rounded-2xl shadow-sm group-hover:shadow-xl border border-stone-200/80 bg-white transition-shadow">
+                    ${img}
                 </div>
-                <div class="grid grid-cols-2 gap-1.5 sm:gap-3 bg-brandCream rounded-xl p-1.5 sm:p-3">${thumbs}
-                </div>
-                <span class="mt-3 sm:mt-4 inline-flex items-center justify-center gap-2 bg-brandNavy group-hover:bg-brandNavyDark text-white text-xs sm:text-sm font-bold py-2 sm:py-2.5 px-4 rounded-full transition-colors">
-                    Ver ${esc(landing.name.toLowerCase())} <i class="fa-solid fa-arrow-right text-xs"></i>
-                </span>
+                <h3 class="mt-2 sm:mt-3 text-base sm:text-xl font-black text-stone-800 group-hover:text-brandNavy transition-colors">${esc(landing.name)}</h3>
+                <p class="text-[11px] sm:text-sm text-stone-500">${items.length} modelos · ${esc(landing.tagline.toLowerCase())}</p>
             </a>`;
     }).join('');
 
