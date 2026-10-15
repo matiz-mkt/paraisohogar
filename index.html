@@ -208,21 +208,9 @@
         </div>
 
         <!-- Banner -->
-        <a href="#catalogo" onclick="showUnderPriceInCatalog(); return false;"
-            class="relative block overflow-hidden rounded-2xl bg-gradient-to-r from-brandNavyDark via-brandNavy to-brandNavyDark text-white px-5 py-6 sm:px-10 sm:py-8 mb-5 shadow-md group">
-            <i class="fa-solid fa-tags absolute -right-4 -bottom-6 text-[110px] sm:text-[170px] text-white/5 rotate-12"></i>
-            <div class="relative flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                <div>
-                    <p class="text-brandSand text-xs sm:text-sm font-semibold uppercase tracking-widest">Precios que rinden</p>
-                    <p class="text-2xl sm:text-4xl font-black leading-tight mt-1">
-                        Todo por menos de <span class="text-brandOrange">$2.000</span>
-                    </p>
-                    <p class="text-brandSand text-xs sm:text-sm mt-1.5">Accesorios, tecnología y básicos para tu hogar. Hasta 12 cuotas.</p>
-                </div>
-                <span class="self-start sm:self-auto inline-flex items-center gap-2 bg-brandOrange group-hover:bg-brandOrangeHover text-white text-xs sm:text-sm font-bold py-2.5 px-5 rounded-full shadow-sm transition-colors">
-                    Ver todos <i class="fa-solid fa-arrow-right text-xs"></i>
-                </span>
-            </div>
+        <a href="/como-comprar/" class="block mb-5 overflow-hidden rounded-2xl shadow-md hover:shadow-lg transition-shadow">
+            <img src="banner-seguidores-ml.png" alt="¡Aprovechá estos descuentos imperdibles! $100 OFF exclusivo para seguidores en Mercado Libre"
+                class="w-full h-auto" width="1506" height="177" loading="lazy">
         </a>
 
         <!-- Carrusel -->
@@ -233,6 +221,11 @@
 
     <!-- Main Content Container -->
     <main id="catalogo" class="max-w-7xl mx-auto px-4 py-8 flex-1 w-full">
+        <!-- Banner de la landing "Ofertas" (solo visible en #categoria-ofertas) -->
+        <div id="ofertasBanner" class="hidden mb-6 overflow-hidden rounded-2xl">
+            <img src="banner-cabal.svg" alt="Ofertas Paraíso Hogar" class="w-full h-auto" width="1440" height="188">
+        </div>
+
         <!-- Section Header -->
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 pb-4 border-b border-stone-200 gap-2">
             <div>
@@ -396,6 +389,9 @@
         const FEATURED_MAX_PRICE = 2000;
         const FEATURED_LIMIT = 12;
 
+        // Landing "Ofertas" (#categoria-ofertas): productos por debajo de este precio
+        const OFFERS_MAX_PRICE = 3000;
+
         function init() {
             const hashCat = getCategoryFromHash();
             if (hashCat) selectedCategory = hashCat;
@@ -514,7 +510,7 @@
         }
 
         function getCategories() {
-            const cats = ['Todas'];
+            const cats = ['Todas', 'Ofertas'];
             if (NEW_ARRIVAL_IDS.size > 0) cats.push('Nuevos');
             products.forEach(p => {
                 if (!cats.includes(p.category)) cats.push(p.category);
@@ -552,9 +548,12 @@
             const searchInput = document.getElementById('searchInput');
             const query = searchInput.value.toLowerCase().strip();
             document.getElementById('searchClearBtn').classList.toggle('hidden', query.length === 0);
+            document.getElementById('ofertasBanner').classList.toggle('hidden', selectedCategory !== 'Ofertas');
             const filtered = products.filter(p => {
                 const matchesCat = selectedCategory === 'Todas'
-                    || (selectedCategory === 'Nuevos' ? NEW_ARRIVAL_IDS.has(p.id) : p.category === selectedCategory);
+                    || (selectedCategory === 'Nuevos' && NEW_ARRIVAL_IDS.has(p.id))
+                    || (selectedCategory === 'Ofertas' && parsePrice(p.price_final) > 0 && parsePrice(p.price_final) < OFFERS_MAX_PRICE)
+                    || p.category === selectedCategory;
                 const matchesQuery = p.title.toLowerCase().includes(query);
                 return matchesCat && matchesQuery;
             });
