@@ -199,7 +199,7 @@
         </div>
     </nav>
 
-    <!-- Lo más destacado: banner + carrusel de productos de menos de $2.000 -->
+    <!-- Lo más destacado: carrusel de tocadores y escritorios -->
     <section id="destacados" class="max-w-7xl mx-auto px-4 pt-8 w-full scroll-mt-20" aria-labelledby="destacadosTitle">
         <div class="flex items-center justify-between mb-4 gap-2">
             <h2 id="destacadosTitle" class="text-2xl font-bold text-stone-800">Lo más destacado</h2>
@@ -214,12 +214,6 @@
                 </button>
             </div>
         </div>
-
-        <!-- Banner -->
-        <a href="/como-comprar/" class="block mb-5 overflow-hidden rounded-2xl shadow-md hover:shadow-lg transition-shadow">
-            <img src="banner-seguidores-ml.png" alt="¡Aprovechá estos descuentos imperdibles! $100 OFF exclusivo para seguidores en Mercado Libre"
-                class="w-full h-auto" width="1506" height="177" loading="lazy">
-        </a>
 
         <!-- Carrusel -->
         <div id="featuredTrack" class="flex gap-3 sm:gap-6 overflow-x-auto no-scrollbar snap-x snap-mandatory pb-2">
@@ -417,8 +411,8 @@
         let currentList = [];
         let heroTimer = null;
 
-        // "Lo más destacado": productos por debajo de este precio (primero los que tienen descuento)
-        const FEATURED_MAX_PRICE = 2000;
+        // "Lo más destacado": productos cuyo título empieza con "Tocador" o "Escritorio" (primero los que tienen descuento)
+        const FEATURED_KEYWORDS = /^(tocador|escritorio)/;
         const FEATURED_LIMIT = 12;
 
         // Landing "Ofertas" (#categoria-ofertas): productos por debajo de este precio
@@ -700,11 +694,8 @@
         function renderFeatured() {
             const track = document.getElementById('featuredTrack');
             if (!track) return;
-            const under = products.filter(p => {
-                const price = parsePrice(p.price_final);
-                return price > 0 && price < FEATURED_MAX_PRICE;
-            });
-            const items = [...under.filter(p => p.discount_pct), ...under.filter(p => !p.discount_pct)].slice(0, FEATURED_LIMIT);
+            const matches = products.filter(p => FEATURED_KEYWORDS.test(slugify(p.title || '')));
+            const items = [...matches.filter(p => p.discount_pct), ...matches.filter(p => !p.discount_pct)].slice(0, FEATURED_LIMIT);
             if (items.length === 0) {
                 document.getElementById('destacados').classList.add('hidden');
                 return;
