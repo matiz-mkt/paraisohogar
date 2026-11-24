@@ -415,8 +415,7 @@
         const FEATURED_KEYWORDS = /^(tocador|escritorio)/;
         const FEATURED_LIMIT = 12;
 
-        // Landing "Ofertas" (#categoria-ofertas): productos por debajo de este precio
-        const OFFERS_MAX_PRICE = 3000;
+        // Landing "Ofertas" (#categoria-ofertas): solo productos con descuento (discount_pct > 0)
 
         function init() {
             const hashCat = getCategoryFromHash();
@@ -578,7 +577,7 @@
             const filtered = products.filter(p => {
                 const matchesCat = selectedCategory === 'Todas'
                     || (selectedCategory === 'Nuevos' && NEW_ARRIVAL_IDS.has(p.id))
-                    || (selectedCategory === 'Ofertas' && parsePrice(p.price_final) > 0 && parsePrice(p.price_final) < OFFERS_MAX_PRICE)
+                    || (selectedCategory === 'Ofertas' && p.discount_pct > 0)
                     || p.category === selectedCategory;
                 const matchesQuery = p.title.toLowerCase().includes(query);
                 return matchesCat && matchesQuery;
