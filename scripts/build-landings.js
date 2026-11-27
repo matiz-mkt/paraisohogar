@@ -71,6 +71,8 @@ const norm = s => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().trim(
 const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const parsePrice = s => parseInt(String(s).replace(/\D/g, ''), 10) || 0;
 const hasMl = p => p.ml_url && p.ml_url !== 'nan';
+// Mensaje de WhatsApp con el link a Mercado Libre del producto
+const waHref = p => hasMl(p) ? p.wa_url + encodeURIComponent('\nLink: ' + p.ml_url) : p.wa_url;
 
 function loadProducts() {
     const html = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
@@ -112,14 +114,10 @@ function productCard(p, i) {
                         </div>
                     </article>
                     <div class="p-2.5 sm:p-4 pt-0 space-y-1.5 sm:space-y-2">
-                        <a href="${esc(p.wa_url)}" target="_blank" rel="noopener noreferrer nofollow" title="Consultar por WhatsApp"
+                        <a href="${esc(waHref(p))}" target="_blank" rel="noopener noreferrer nofollow" title="Consultar por WhatsApp"
                             class="w-full flex items-center justify-center gap-1.5 sm:gap-2 bg-emerald-500 hover:bg-emerald-600 text-white text-[11px] sm:text-xs font-bold py-2 sm:py-2.5 px-2 sm:px-3 rounded-lg shadow-sm transition-colors duration-150">
                             <i class="fa-brands fa-whatsapp text-sm sm:text-base"></i><span>Consultar</span>
                         </a>
-                        ${hasMl(p) ? `<a href="${esc(p.ml_url)}" target="_blank" rel="noopener noreferrer" title="Ver ${esc(p.title)} en Mercado Libre"
-                            class="w-full flex items-center justify-center gap-1 sm:gap-1.5 bg-[#3483fa] hover:bg-[#2968c8] text-white text-[11px] sm:text-xs font-bold py-1.5 sm:py-2 px-2 sm:px-3 rounded-lg transition-colors duration-150">
-                            <i class="fa-solid fa-cart-shopping text-[10px] sm:text-xs"></i><span>Comprar</span>
-                        </a>` : ''}
                     </div>
                 </li>`;
 }
